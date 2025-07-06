@@ -20,6 +20,13 @@ $routes->group('produk', ['filter' => 'auth'], function ($routes) {
     $routes->get('download', 'ProdukController::download');
 });
 
+$routes->group('diskon', ['filter' => 'auth'], function ($routes) {
+    $routes->get('', 'DiskonController::index');
+    $routes->post('', 'DiskonController::create');
+    $routes->post('edit/(:any)', 'DiskonController::edit/$1');
+    $routes->get('delete/(:any)', 'DiskonController::delete/$1');
+});
+
 $routes->group('kategori-produk', ['filter' => 'auth'], function ($routes) {
     $routes->get('', 'KategoriProdukController::index');
     $routes->post('', 'KategoriProdukController::create');

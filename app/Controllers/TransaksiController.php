@@ -33,14 +33,24 @@ class TransaksiController extends BaseController
 
     public function cart_add()
     {
+        $harga = $this->request->getPost('harga');
+        $diskon = session()->get('diskon_hari_ini') ?? 0; // Ambil diskon dari session, default 0
+
+        $harga_diskon = max($harga - $diskon, 0); // Kurangi harga, tapi tidak boleh negatif
+
         $this->cart->insert(array(
             'id' => $this->request->getPost('id'),
             'qty' => 1,
-            'price' => $this->request->getPost('harga'),
+            'price' => $harga_diskon,
             'name' => $this->request->getPost('nama'),
-            'options' => array('foto' => $this->request->getPost('foto'))
+            'options' => array(
+                'foto' => $this->request->getPost('foto'),
+                'harga_asli' => $harga,
+                'diskon' => $diskon
+            )
         ));
-        session()->setflashdata('success', 'Produk berhasil ditambahkan ke keranjang. (<a href="' . base_url() . 'keranjang">Lihat</a>)');
+
+        session()->setFlashdata('success', 'Produk berhasil ditambahkan ke keranjang. (<a href="' . base_url() . 'keranjang">Lihat</a>)');
         return redirect()->to(base_url('/'));
     }
 
@@ -158,12 +168,16 @@ class TransaksiController extends BaseController
             $last_insert_id = $this->transaction->getInsertID();
 
             foreach ($this->cart->contents() as $value) {
+                $harga_asli = $value['options']['harga_asli'];
+                $diskon = $value['options']['diskon'];
+                $harga_setelah_diskon = max($harga_asli - $diskon, 0);
+
                 $dataFormDetail = [
                     'transaction_id' => $last_insert_id,
                     'product_id' => $value['id'],
                     'jumlah' => $value['qty'],
-                    'diskon' => 0,
-                    'subtotal_harga' => $value['qty'] * $value['price'],
+                    'diskon' => $diskon,
+                    'subtotal_harga' => $value['qty'] * $harga_setelah_diskon,
                     'created_at' => date("Y-m-d H:i:s"),
                     'updated_at' => date("Y-m-d H:i:s")
                 ];
