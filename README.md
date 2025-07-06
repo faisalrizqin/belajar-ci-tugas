@@ -55,7 +55,7 @@ Proyek ini adalah platform toko online yang dibangun menggunakan [CodeIgniter 4]
    composer install
    ```
 3. **Install library eksternal**
-  ```bash
+   ```bash
    composer require guzzlehttp/guzzle
    ```
 4. **Konfigurasi environment**
@@ -64,8 +64,7 @@ Proyek ini adalah platform toko online yang dibangun menggunakan [CodeIgniter 4]
    - Buat database **db_ci4** di phpmyadmin.
    - copy file .env dari tutorial https://www.notion.so/april-ns/Codeigniter4-Migration-dan-Seeding-045ffe5f44904e5c88633b2deae724d2
    - Tambahkan di file env:
-    COST_KEY = api_key_rajaongkir_anda
-    API_KEY = random123678abcghi (diisi bebas)
+    COST_KEY = api_key_rajaongkir_anda, API_KEY = random123678abcghi (diisi bebas)
 
 5. **Jalankan migrasi database**
    ```bash
@@ -116,4 +115,4 @@ Proyek menggunakan struktur MVC CodeIgniter 4:
   - layout_clear.php - Layout clear untuk halaman login
 - public/img - Gambar produk dan aset
 - public/NiceAdmin - Template admin
-- public/index.php – Dashboard webservice transaksi
+- public/dashboard-toko/index.php – Dashboard webservice transaksi
